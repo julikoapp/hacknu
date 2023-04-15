@@ -45,7 +45,7 @@ class Client(AbstractBaseUser, PermissionsMixin):
     
     def __str__(self):
         """Return string representation"""
-        return self.email
+        return str(self.email)
 
 
 class Operator(models.Model):
@@ -54,10 +54,10 @@ class Operator(models.Model):
     name = models.CharField(max_length=255)
     phone = models.IntegerField()
     address = models.CharField(max_length=255)
-    
+    # TODO add password
     def __str__(self):
         """Return string representation"""
-        return self.email
+        return str(self.email)
 
 
 class Brigada(models.Model):
@@ -65,10 +65,10 @@ class Brigada(models.Model):
     title = models.CharField(max_length=255)
     phone = models.IntegerField()
     email = models.EmailField(max_length=255, unique=True)
-
+    # TODO add password
     def __str__(self):
         """Return string representation"""
-        return self.email
+        return str(self.email)
 
 
 class Task(models.Model):
@@ -88,6 +88,10 @@ class Task(models.Model):
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    address = models.CharField(max_length=255)
+    # client = models.Client()
+
+    # def create_task(): Do we  need to implement it this way? 
 
     def __str__(self):
-        return self.category
+        return str(self.category)
