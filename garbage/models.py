@@ -1,41 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
-from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
 
-
-class Operator(BaseUserManager):
-    """Operator for clients"""
-    def create_user(self, email, name, phone, address, password=None):
-        """Create new client profile"""
-        if not email:
-            raise ValueError('User must have an email address')
-        
-        if not phone:
-            raise ValueError('User must have a phone number')
-        
-        if not address:
-            raise ValueError('User must have an address')
-        
-        email = self.normalize_email(email)
-        user = self.model(email=email, name=name, phone=phone, address=address)
-    
-        user.set_password(password)
-        user.save(using=self._db)
-        
-        return user
-    
-    def create_superuser(self, email, name, phone, address, password):
-        """Create new superuser"""
-        user = self.create_user(email, name, phone, address, password)
-        
-        user.is_superuser = True
-        user.is_staff = True
-        user.save(using=self._db)
-        
-        return user
-    
 
 class Client(AbstractBaseUser, PermissionsMixin):
     """Database model for clients"""
@@ -44,20 +11,75 @@ class Client(AbstractBaseUser, PermissionsMixin):
     phone = models.IntegerField()
     address = models.CharField(max_length=255)
     is_staff = models.BooleanField(default=False)
-    
-    objects = Operator()
-    
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name', 'phone', 'address']
     
-    def get_name(self):
-        """Return cleint full name"""
-        return self.name
+    def create_user(self, email, name, phone, address, password):
+        """Create new user profile"""
+        if not email:
+            raise ValueError('Client must have an email address')
+        
+        if not password:
+            raise ValueError('Client must have a password')
+        
+        if not address:
+            raise ValueError('Client must have an address')
+        
+        user = self.model(email=email, name=name, phone=phone, address=address)
     
-    def get_address(self):
-        """Return cleint address"""
-        return self.address
+        user.set_password(password)
+        user.save(using=self._db)
+        
+        return user
     
-    def get_phone(self):
-        """Return cleint phone number"""
-        return self.phone
+    def __str__(self):
+        """Return string representation"""
+        return self.email
+
+
+class Operator(models.Model):
+    """Operator for users"""
+    email = models.EmailField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
+    phone = models.IntegerField()
+    address = models.CharField(max_length=255)
+    is_staff = models.BooleanField(default=True)
+
+    def __str__(self):
+        """Return string representation"""
+        return self.email
+
+
+class Brigada(models.Model):
+    """Brigada model"""
+    title = models.CharField(max_length=255)
+    phone = models.IntegerField()
+    email = models.EmailField(max_length=255, unique=True)
+
+    def __str__(self):
+        """Return string representation"""
+        return self.email
+
+
+class Task(models.Model):
+    """Task model"""
+    TYPES = (
+        (1, 'Install ecobox'),
+        (2, 'Empty ecobox'),
+        (3, 'Dismantle ecobox'),
+    )
+    STATUSES = (
+        (1, 'Not started'),
+        (2, 'In progress'),
+        (3, 'Finished'),
+    )
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    type = models.CharField(max_length=255, choices=TYPES)
+    status = models.CharField(max_length=255, choices=STATUSES)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
