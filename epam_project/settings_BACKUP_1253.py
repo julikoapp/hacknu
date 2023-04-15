@@ -39,9 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+<<<<<<< HEAD
     'garbage',
+<<<<<<< HEAD
+    'rest_framework',
+=======
+=======
     'epam_project',
+    
+>>>>>>> yuliya
+>>>>>>> 3a77ad844864189e549f257588d4c81daf920b50
 ]
 
 MIDDLEWARE = [
