@@ -17,5 +17,7 @@ urlpatterns = [
     path('task-update/<str:pk>/', views.taskUpdate, name="task-update"),
     path('task-create/', views.taskCreate, name="task-create"),
     path('task-delete/', views.taskDelete, name="task-delete"),
-    
+    path('task-filter-category/<str:pk>/', views.taskFilterCat, name="task-group"),
+    path('task-filter-client/<str:pk>/', views.taskFilterClient, name="task-group"),
+    path('task-filter-status/<str:pk>/', views.taskFilterStatus, name="task-group"),
 ]

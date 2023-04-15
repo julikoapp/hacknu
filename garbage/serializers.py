@@ -6,14 +6,15 @@ from garbage import models
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Client
-        fields = ('id', 'email', 'name', 'phone', 'address', 'password')
-        extra_kwargs = {
-            'password': {
-                'write_only': True,
-                'style': {'input_type': 'password'},
-                'min_length': 8
-            }
-        }
+        fields = '__all__'
+        # fields = ('id', 'email', 'name', 'phone', 'address', 'password')
+        # extra_kwargs = {
+        #     'password': {
+        #         'write_only': True,
+        #         'style': {'input_type': 'password'},
+        #         'min_length': 8
+        #     }
+        # }
         
     def create(self, validated_data):
         """Create and return new user"""

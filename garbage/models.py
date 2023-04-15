@@ -88,6 +88,10 @@ class Task(models.Model):
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # client = models.ForeignKey(Client,  on_delete=models.CASCADE, related_name="client", null=True)
+    client = models.TextField(null=True, blank=True)
+    brigada = models.TextField(null=True, blank=True)
+    # brigada = models.ForeignKey(Brigada,  on_delete=models.CASCADE, related_name="brigada", null=True)
 
     def __str__(self):
         return self.category

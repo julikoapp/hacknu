@@ -64,6 +64,24 @@ def apiOverview(request):
     return Response(api_urls)
 
 @api_view(['GET'])
+def taskFilterCat(request, pk):
+    tasks = models.Task.objects.filter(category=pk)
+    serializer = serializers.TaskSerializer(tasks, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def taskFilterStatus(request, pk):
+    tasks = models.Task.objects.filter(status=pk)
+    serializer = serializers.TaskSerializer(tasks, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def taskFilterClient(request, pk):
+    tasks = models.Task.objects.filter(client ==pk)
+    serializer = serializers.TaskSerializer(tasks, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def taskList(request):
     tasks = models.Task.objects.all()
     serializer = serializers.TaskSerializer(tasks, many = True, required=False)

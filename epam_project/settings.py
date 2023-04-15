@@ -27,9 +27,11 @@ SECRET_KEY = 'django-insecure-8+wors22rc%gxgvj6uy4y1#w%p7r86c&_124a&w%dq7$2p8az6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['localhost', 'localhost:3000']
 
-
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'garbage',
     'epam_project',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +56,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    ],
+}
 
 ROOT_URLCONF = 'epam_project.urls'
 
