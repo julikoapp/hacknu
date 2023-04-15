@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from garbage import models
 
+
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Client
@@ -9,7 +10,8 @@ class ClientSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'password': {
                 'write_only': True,
-                'style': {'input_type': 'password'}
+                'style': {'input_type': 'password'},
+                'min_length': 8
             }
         }
         
@@ -18,6 +20,8 @@ class ClientSerializer(serializers.ModelSerializer):
         user = models.Client.objects.create_user(
             email = validated_data['email'],
             name = validated_data['name'],
+            phone = validated_data['phone'],
+            address = validated_data['address'],
             password = validated_data['password']
         )
         return user
@@ -30,10 +34,9 @@ class ClientSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
+
 class TaskSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Task
-		fields = ('id', 'status', 'category', 'description', 'created_by', 'created_at', 'updated_at')
-
-
+		fields = ('id', 'status', 'category', 'description', 'created_at', 'updated_at')
   

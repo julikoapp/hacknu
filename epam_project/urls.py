@@ -23,7 +23,8 @@ urlpatterns = [
     path("", views.index, name="index"),
     # path("garbage/", include("garbage.urls")),
     path("login/", views.login, name="login"),
-    path("register/", views.register, name="register")
+    path("register/", views.register, name="register"),
+    path('api/', include('garbage.urls'))
     # path("client/", include("client.urls")),
     # path("brigada/", include("brigada.urls")),
     # path("operator/", include("operator.urls"))

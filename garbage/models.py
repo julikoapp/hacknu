@@ -1,38 +1,47 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
 
 
-class Client(AbstractBaseUser, PermissionsMixin):
-    """Database model for clients"""
-    email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
-    phone = models.IntegerField()
-    address = models.CharField(max_length=255)
-    is_staff = models.BooleanField(default=False)
-    password = models.CharField(max_length=255)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'phone', 'address', 'password']
-    
-    def create_user(self, email, name, phone, address, password):
+class ClientManager(BaseUserManager):
+    """Manager for user profiles"""
+    def create_user(self, email, name, phone, address, password=None):
         """Create new user profile"""
         if not email:
-            raise ValueError('Client must have an email address')
+            raise ValueError('User must have an email address')
         
-        if not password:
-            raise ValueError('Client must have a password')
-        
-        if not address:
-            raise ValueError('Client must have an address')
-        
-        user = self.model(email=email, name=name, phone=phone, address=address)
+        user = self.model(email=self.normalize_email(email), name=name, phone=phone, address=address)
     
         user.set_password(password)
         user.save(using=self._db)
         
         return user
+    
+    def create_superuser(self, email, name, phone, address, password):
+        """Create new superuser"""
+        user = self.create_user(email, name, phone, address, password)
+        
+        user.is_superuser = True
+        user.is_staff = True
+        user.save(using=self._db)
+        
+        return user
+
+
+class Client(AbstractBaseUser, PermissionsMixin):
+    """Database model for users"""
+    email = models.EmailField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
+    phone = models.IntegerField()
+    address = models.CharField(max_length=255)
+    is_staff = models.BooleanField(default=False)
+    
+    objects = ClientManager()
+    
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['name', 'phone', 'address']
     
     def __str__(self):
         """Return string representation"""
@@ -45,9 +54,7 @@ class Operator(models.Model):
     name = models.CharField(max_length=255)
     phone = models.IntegerField()
     address = models.CharField(max_length=255)
-    is_staff = models.BooleanField(default=True)
-    password = models.CharField(max_length=255)
-
+    
     def __str__(self):
         """Return string representation"""
         return self.email
@@ -58,7 +65,6 @@ class Brigada(models.Model):
     title = models.CharField(max_length=255)
     phone = models.IntegerField()
     email = models.EmailField(max_length=255, unique=True)
-    password = models.CharField(max_length=255)
 
     def __str__(self):
         """Return string representation"""
@@ -77,15 +83,11 @@ class Task(models.Model):
         (2, 'In progress'),
         (3, 'Finished'),
     )
-    status = models.IntegerField(max_length=255, choices=STATUSES, default=1)
-    category = models.IntegerField(max_length=255, choices=CATEGORIES, default=1)
+    status = models.IntegerField(choices=STATUSES, default=1)
+    category = models.IntegerField(choices=CATEGORIES, default=1)
     description = models.TextField(null=True, blank=True)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def create_task():
-        pass
 
     def __str__(self):
         return self.category
