@@ -1,5 +1,5 @@
 from rest_framework import serializers
-import datetime
+
 from garbage import models
 
 
@@ -34,49 +34,9 @@ class ClientSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
-class OperatorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Client
-        fields = {'id', 'email', 'phone', 'address', 'password'}
-        
-        
-    def create(self, validated_data):
-        """ Create a new operator """
-        operator = models.Operator.objects.create_operator(
-            email = validated_data['email'],
-            name = validated_data['name'],
-            phone = validated_data['phone'],
-            address = validated_data['address']
-        )
-        return operator
-    
-    def update(self, instance, validated_data):
-        """Update the operator """
-        return super().update(instance, validated_data)
-
-
 
 class TaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Task
-        fields = ('id', 'status', 'category', 'description', 'created_at', 'updated_at', 'address') # Add these: 'client', 'brigada')
-    
-    def create(self, validated_data):
-        """ Create a new operator """
-        task = models.Task.objects.create_task(
-            category = validated_data['category'],
-            status = 1,
-            description = validated_data['description'],
-            created_at = datetime.datetime.now(),
-            updated_at = datetime.datetime.now(),
-            address = validated_data['address'],
-           # client = validated_data['client'],
-           # brigada = None
-        )
-        return task
-
-    def update(self, instance, validated_data):
-        # TODO update the status how? 
-        # TODO update the brigada that will do it
-        instance.updated_at = datetime.datetime.now()
-
+	class Meta:
+		model = models.Task
+		fields = ('id', 'status', 'category', 'description', 'created_at', 'updated_at')
+  
