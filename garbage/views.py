@@ -8,7 +8,6 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
-from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 
 
 from garbage import serializers

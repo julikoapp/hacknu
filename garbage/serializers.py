@@ -1,5 +1,5 @@
 from rest_framework import serializers
-import datetime
+
 from garbage import models
 
 
@@ -33,27 +33,6 @@ class ClientSerializer(serializers.ModelSerializer):
             instance.set_password(password)
 
         return super().update(instance, validated_data)
-
-class OperatorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Client
-        fields = {'id', 'email', 'phone', 'address', 'password'}
-        
-        
-    def create(self, validated_data):
-        """ Create a new operator """
-        operator = models.Operator.objects.create_operator(
-            email = validated_data['email'],
-            name = validated_data['name'],
-            phone = validated_data['phone'],
-            address = validated_data['address']
-        )
-        return operator
-    
-    def update(self, instance, validated_data):
-        """Update the operator """
-        return super().update(instance, validated_data)
-
 
 
 class TaskSerializer(serializers.ModelSerializer):
