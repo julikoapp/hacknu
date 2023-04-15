@@ -36,7 +36,27 @@ class ClientSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = models.Task
-		fields = ('id', 'status', 'category', 'description', 'created_at', 'updated_at')
-  
+    class Meta:
+        model = models.Task
+        fields = '__all__'
+        # fields = ('id', 'status', 'category', 'description', 'created_at', 'updated_at', 'address') # Add these: 'client', 'brigada')
+    
+    # def create(self, validated_data):
+    #     """ Create a new operator """
+    #     task = models.Task.objects.create_task(
+    #         category = validated_data['category'],
+    #         status = 1,
+    #         description = validated_data['description'],
+    #         created_at = datetime.datetime.now(),
+    #         updated_at = datetime.datetime.now(),
+    #         address = validated_data['address'],
+    #        # client = validated_data['client'],
+    #        # brigada = None
+    #     )
+    #     return task
+
+    # def update(self, instance, validated_data):
+    #     # TODO update the status how? 
+    #     # TODO update the brigada that will do it
+    #     instance.updated_at = datetime.datetime.now()
+
