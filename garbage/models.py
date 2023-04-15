@@ -64,7 +64,7 @@ class Brigada(models.Model):
 
 class Task(models.Model):
     """Task model"""
-    TYPES = (
+    CATEGORIES = (
         (1, 'Install ecobox'),
         (2, 'Empty ecobox'),
         (3, 'Dismantle ecobox'),
@@ -74,12 +74,15 @@ class Task(models.Model):
         (2, 'In progress'),
         (3, 'Finished'),
     )
-    title = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    type = models.CharField(max_length=255, choices=TYPES)
-    status = models.CharField(max_length=255, choices=STATUSES)
+    status = models.IntegerField(max_length=255, choices=STATUSES, default=1)
+    category = models.IntegerField(max_length=255, choices=CATEGORIES, default=1)
+    description = models.TextField(null=True, blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def create_task():
+        pass
+
     def __str__(self):
-        return self.title
+        return self.category
