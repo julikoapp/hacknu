@@ -11,9 +11,10 @@ class Client(AbstractBaseUser, PermissionsMixin):
     phone = models.IntegerField()
     address = models.CharField(max_length=255)
     is_staff = models.BooleanField(default=False)
+    password = models.CharField(max_length=255)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'phone', 'address']
+    REQUIRED_FIELDS = ['name', 'phone', 'address', 'password']
     
     def create_user(self, email, name, phone, address, password):
         """Create new user profile"""
@@ -45,6 +46,7 @@ class Operator(models.Model):
     phone = models.IntegerField()
     address = models.CharField(max_length=255)
     is_staff = models.BooleanField(default=True)
+    password = models.CharField(max_length=255)
 
     def __str__(self):
         """Return string representation"""
@@ -56,6 +58,7 @@ class Brigada(models.Model):
     title = models.CharField(max_length=255)
     phone = models.IntegerField()
     email = models.EmailField(max_length=255, unique=True)
+    password = models.CharField(max_length=255)
 
     def __str__(self):
         """Return string representation"""
